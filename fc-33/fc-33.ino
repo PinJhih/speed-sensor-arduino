@@ -2,7 +2,7 @@
 #define INFRARED_PIN 9
 #define SIGNAL_PIN 7
 #define BTN_START 11
-#define CYCLE_TIME 10
+#define CYCLE_TIME 1
 
 int count = 0;
 bool status = false;
@@ -18,19 +18,24 @@ void setup() {
 }
 
 void loop() {
-  while(digitalRead(INFRARED_PIN)==LOW)
+  while(digitalRead(BTN_START)==LOW)
     delay(10);
+  while(digitalRead(BTN_START)==HIGH)
+    delay(10);
+    
   int time=0; 
   count=0;
+  
   digitalWrite(LED_PIN, HIGH);
-  while(digitalRead(BTN_START)==LOW){
+  while(digitalRead(INFRARED_PIN)==LOW){
     read = digitalRead(SIGNAL_PIN);
     if(read!=status)
       if(read==HIGH){
-        count++;
-        Serial.print(time);
+        Serial.print(count);
         Serial.print(space);
-        Serial.println(count);
+        Serial.println(time);
+        Serial.println();
+        count++;
       }
     status = read;
     delay(CYCLE_TIME);
